@@ -7,9 +7,9 @@ Fractional part is nothing but the bits after the decimal place in the normalise
 Floating point representation is categorised as single and double precision based on the number of bits for representation i.e, 32 and 64 bits respectively.
 In single precision 23 bits are for fractional part whereas 52 bits are there in case of double precision.
 
-For example 0.1 (decimal number) can be represented as 0.000110011001100110011001101 and 0.0001100110011001100110011001100110011001100110011001101 in single precision
-and double precision respectively. If we look into these representations in decimal form , they are 0.100000001490116119384765625 and 
-0.1000000000000000055511151231257827021181583404541015625 respectively. Clearly the later one is more precised representation for 0.1 in decimal.
+For example 1.1 (decimal number) can be represented as 1.00011001100110011001101 and 1.000110011001100110011001100110011001100110011001101 in single precision
+and double precision respectively. If we look into these representations in decimal form , they are 1.10000002384185791015625 and 
+1.100000000000000088817841970012523233890533447265625 respectively. Clearly the later one is more precised representation for 1.1 in decimal.
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
