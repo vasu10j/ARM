@@ -1,0 +1,8 @@
+For a positive normalised floating point, mantissa is given by m0.m1m2m3m4......with non-zero m0. In binary radix, the leading bit will thus be always 1.
+In a denormal number,it can be represented as 0.m1m2m3..... In binary radix, the leading bit is always 0.Denormal numbers are closer to zero than the 
+smallest normal number. Denormal value can be thought as the flaoting-point number with least possible value of its exponent.
+
+Normal value representation: 1.significand bits × 2^exp
+Denormal value representation: 0.significand bits × 2^exp
+
+The smallest normal and subnormal values are 1.000....00000 x 2^exp and 0.000.....01 x 2^exp respectively.
