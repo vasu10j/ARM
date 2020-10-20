@@ -1,0 +1,25 @@
+Diffrenet rouding methods are:
+
+(1) Rounding to nearest, ties to even: Rounds to the nearest value. For the numbers in the middle rounding is done such that the least significant digit
+                                       is even.
+
+(2) Rounding to nearest, ties away from zero: Rounds to the nearest value. For the numbers in the middle rounding is done such that they are seemed to be
+                                              pulled away from zero i.e, positive numbers to the next higher and negative numbers to just lower one.
+
+(3) Round up: Rounds to the nearest value. For the numbers in the middle rounding is done to get the next higher number.
+ 
+(4) Round down:  Rounds to the nearest value. For the numbers in the middle rounding is done to get the lower number.
+
+(5) Round toward zero: Rounds to the nearest value. For the numbers in the middle rounding is done such that they are seemed to be
+                                              pulled towards zero i.e, negative numbers to the next higher and positive numbers to just lower one.
+                                              
+                  
+                  
+                  
+                   MODE              Example value
+                                  3.5   2.5   -2.5  -3.5
+                   (1)             4     2     -2    -4
+                   (2)             4     3     -3    -4
+                   (3)             4     3     -2    -3
+                   (4)             3     2     -3    -4
+                   (5)             3     2     -2    -3
