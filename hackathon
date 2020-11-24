@@ -53,10 +53,10 @@ fact         CMP r6, #1
 	   
 	         MOV r8,r5 
              MOV r9,#1 
-factorial    CMP r8, #1
+fact1    CMP r8, #1
              MUL r9, r8, r9
              SUB r8, r8, #1 
-             BNE factorial 
+             BNE fact1 
 			 
        vmov s14,r8   
 	   vdiv.f32 s10, s9, s14
