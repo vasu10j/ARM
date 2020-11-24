@@ -2,8 +2,11 @@
      export __main
 	 ENTRY 
 __main  function		 
-   
-       vldr.f32 s15, =20    ; r1=20
+           
+	   vldr.f32 s24, =100    
+	   vldr.f32 s25, =100    ; moon centre @(100,100) and earth @ origin
+	   
+           vldr.f32 s15, =20    ; r1=20
 	   vldr.f32 s19, =1    ; r1_inc=5
 	   
 	   vldr.f32 s20, =10    ; r2=10
@@ -84,13 +87,15 @@ factorial    CMP r8, #1
 
 
 ;spiral_1 coordinates
-       vmul.f32 s11,s15,s18  ; x1= r1.cos
+           vmul.f32 s11,s15,s18  ; x1= r1.cos
 	   vmul.f32 s12,s15,s8  ; y1= r1.sin
       
 ;spiral_2 coordinates
-       vmul.f32 s22,s19,s18  ; x2= r2.cos
-	   vmul.f32 s23,s19,s8  ; y2= r2.sin
-       
+           vmul.f32 s22,s19,s18  ;   x2= 0 + r2.cos
+	   vmul.f32 s23,s19,s8  ;    y2= 0 + r2.sin centre @ origin
+           
+	   vadd.f32  s26,s22,s24 ;   x2= Cx + r2.cos 
+	   vadd.f32  s27,s23,s25 ;   y2= Cy + r2.sin centre @(Cx,Cy)
 	   
 	   vadd.f32 s1,s1,s13 
            vadd.f32 s8,s8,s13  	   
