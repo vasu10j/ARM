@@ -92,8 +92,8 @@ factorial    CMP r8, #1
 	   vmul.f32 s23,s19,s8  ; y2= r2.sin
        
 	   
-	   vaddne.f32 s1,s1,s13 
-       vaddne.f32 s8,s8,s13  	   
+	   vadd.f32 s1,s1,s13 
+           vadd.f32 s8,s8,s13  	   
 	   
 	   vadd.f32 s15,s15,s19
 	   vadd.f32 s20,s20,s21
