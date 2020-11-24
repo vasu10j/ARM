@@ -1,4 +1,4 @@
-area     appcode, CODE, READONLY
+ area     appcode, CODE, READONLY
      export __main
 	 ENTRY 
 __main  function		 
@@ -18,8 +18,8 @@ start  mov r3,#1
 	   
 loop1  
 
-	   vldr.f32 s4, =1
-	   vldr.f32 s14, =0
+	   mov r4, #1
+	   mov r5, #0
 	   vldr.f32 s3, =2    ; increment by 2
 	   
 	   vldr.f32 s9, =1  ; for cos
@@ -34,10 +34,28 @@ repeat vmul.f32 s1,s1,s2    ; x3,x5,x7,x9..
 	   vmul.f32 s9,s9,s2    ; x2,x4,x6,x8..
 	   
 	   add r1,r1,#1
-	   vadd.f32 s4,s4,s3
-	   vadd.f32 s14,s14,s3
+	   add r4,r4,#2
+	   add r5,r5,#2
 	   
+       	     
+			 MOV r6,r4 
+             MOV r7,#1 
+fact         CMP r6, #1
+             MUL r7, r6, r7
+             SUB r6, r6, #1 
+             BNE fact 
+       
+	   vmov s4,r6
 	   vdiv.f32 s5, s1, s4
+	   
+	         MOV r8,r5 
+             MOV r9,#1 
+factorial    CMP r8, #1
+             MUL r9, r8, r9
+             SUB r8, r8, #1 
+             BNE factorial 
+			 
+       vmov s14,r8   
 	   vdiv.f32 s10, s9, s14
 	   
 	   and r2,r1,#1
@@ -92,4 +110,13 @@ repeat vmul.f32 s1,s1,s2    ; x3,x5,x7,x9..
 stop b stop
 endfunc
      end
-	 
+	  
+			         
+     
+stop b stop
+endfunc
+     end
+		 
+	
+		 	  
+		  
