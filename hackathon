@@ -1,127 +1,127 @@
  area     appcode, CODE, READONLY
+     IMPORT printdata
      export __main
 	 ENTRY 
-__main  function		 
-           
-	   vldr.f32 s24, =100    
-	   vldr.f32 s25, =100    ; moon centre @(100,100) and earth @ origin
-	   
-           vldr.f32 s15, =20    ; r1=20
-	   vldr.f32 s19, =1    ; r1_inc=5
-	   
-	   vldr.f32 s20, =10    ; r2=10
-	   vldr.f32 s21, =0.75    ; r2_inc=2
-	   
-	   
-	   vldr.f32 s13, =0.314
-	   
-start  mov r3,#1
-	   vldr.f32 s1, =0    ; (theta)
-	   vldr.f32 s8, =0    ; (theta)
-	   
-loop1  
-
-	   mov r4, #1
-	   mov r5, #0
-	   vldr.f32 s3, =2    ; increment by 2
-	   
-	   vldr.f32 s9, =1  ; for cos
-	   
-	   mov  r1,#1
-	   mov r2,#0
-	   
-	   
-	   vmul.f32 s2,s1,s1  ; x2
-	    
-repeat vmul.f32 s1,s1,s2    ; x3,x5,x7,x9..
-	   vmul.f32 s9,s9,s2    ; x2,x4,x6,x8..
-	   
-	   add r1,r1,#1
-	   add r4,r4,#2
-	   add r5,r5,#2
-	   
-       	     
-			 MOV r6,r4 
-             MOV r7,#1 
-fact         CMP r6, #1
-             MUL r7, r6, r7
-             SUB r6, r6, #1 
-             BNE fact 
+__main  function
        
-	   vmov s4,r6
-	   vdiv.f32 s5, s1, s4
+	   vldr.f32 s14, =100.0 
+	   vldr.f32 s15, =100.0   ;centre_earth
 	   
-	         MOV r8,r5 
-             MOV r9,#1 
-fact1    CMP r8, #1
-             MUL r9, r8, r9
-             SUB r8, r8, #1 
-             BNE fact1 
-			 
-       vmov s14,r8   
-	   vdiv.f32 s10, s9, s14
-	   
-	   and r2,r1,#1
-	   cmp r2,#0
-	   ITE EQ 
-	   vsubeq.f32 s6,s6,s5 ; if odd then -x3/3 -x7/7 
-	   vaddne.f32 s7,s7,s5 ; else  x5/5 +x9/9
-	   
-	   and r2,r1,#1
-	   cmp r2,#0
-	   ITE EQ 
-	   vsubeq.f32 s16,s16,s10 ; if odd then -x3/3 -x7/7 
-	   vaddne.f32 s17,s17,s10 ; else  x5/5 +x9/9
-	   
-	   cmp r1,#3      ; No of terms 
-	   bne repeat
+	   vldr.f32 s22, =600.0 
+	   vldr.f32 s23, =600.0  ;centre_moon
 	   
 	   
-	   vadd.f32 s8,s8,s7  ; 
-	   vadd.f32 s8,s8,s6  ; sin value in s8
-  
-       vldr.f32 s18, =1
-
-       vadd.f32 s18,s18,s17  ; 
-	   vadd.f32 s18,s18,s16  ; cos value in s18
-
-
-;spiral_1 coordinates
-           vmul.f32 s11,s15,s18  ; x1= r1.cos
-	   vmul.f32 s12,s15,s8  ; y1= r1.sin
+	   vldr.f32 s20, =0     ; radius_earth
+	   vldr.f32 s21, =0     ; radius_moon
+	   
+	   vldr.f32 s10, =0.314 ; theta_inc  (2pi/ number of points in one circle ie 0 t0 2pi)
+	   vldr.f32 s16, =1 ; radius_inc_earth
+	   vldr.f32 s19, =0.5 ; radius_inc_moon
+	   
+loop_no mov r8,#1	   
+	   
+start  mov r7,#1
+	  add r8,r8,#1
+	  vldr.f32 s1, =0   ;theta 
       
-;spiral_2 coordinates
-           vmul.f32 s22,s19,s18  ;   x2= 0 + r2.cos
-	   vmul.f32 s23,s19,s8  ;    y2= 0 + r2.sin centre @ origin
-           
-	   vadd.f32  s26,s22,s24 ;   x2= Cx + r2.cos 
-	   vadd.f32  s27,s23,s25 ;   y2= Cy + r2.sin centre @(Cx,Cy)
+;///////////////////	  sin_calculation   ///////////////////
+loop1  
+	   mov  r4,#1
+	   mov  r3,#1
 	   
-	   vadd.f32 s1,s1,s13 
-           vadd.f32 s8,s8,s13  	   
+	   vmov.f32 s2,s1      ;initialise x 
+	   vldr.f32 s7,=0      ; clears earlier sin result
+	   vldr.f32 s6,=0 
 	   
-	   vadd.f32 s15,s15,s19
-	   vadd.f32 s20,s20,s21
-	   
+	   vmov.f32 s3,s1
+	   vmul.f32 s4,s1,s1   ; initialise x2
+	    
+repeat vmul.f32 s3,s3,s4    ; x3,x5,x7,x9..
 	   
 	   add r3,r3,#1
-	   	   
-	   cmp r3,#11
-	   beq start
-	   
-	   cmp r3,#11
-	   bne loop1
+	   add r4,r4,#2
 
-stop b stop
-endfunc
-     end
-	  
-			         
-     
+    		 vmov.f32 s8,r4
+             vcvt.f32.u32 s8,s8			 
+			 vldr.f32 s9,=1
+     		 vldr.f32 s5,=1 
+fact         vcmp.f32 s8,s9
+             vmul.f32 s5, s8, s5    ; s5 stores the factorial value
+             vsub.f32 s8, s8, s9 
+             vmrs APSR_nzcv, FPSCR
+			 bne fact 
+            
+	   vdiv.f32 s6, s3, s5
+	   
+	   and r2,r3,#1
+	   cmp r2,#0
+	   ITE EQ 
+	   vsubeq.f32 s7,s7,s6 ; if odd then -x3/3 -x7/7 
+	   vaddne.f32 s7,s7,s6 ; else  x5/5 +x9/9
+	   
+	   cmp r3,#7      ; No of terms - 1
+	   bne repeat
+	   	   
+	   vadd.f32 s7,s7,s2  ; sin value in s7 
+       
+	   
+	   vldr.f32 s12,=1.57 ;pi/2
+	   vldr.f32 s13,=4.71 ;3pi/2
+	   
+	   vmul.f32 s11,s7,s7 ; sin^2
+	   vsub.f32 s11,s9,s11 ; 1-cos^2
+	   vsqrt.f32 s11,s11 ; 
+	   
+	   vcmp.f32 s1,s12
+	   vmrs APSR_nzcv, FPSCR
+	   ble skip
+	   bgt cond_1
+cond_1 vcmp.f32 s1,s13
+	   vmrs APSR_nzcv, FPSCR
+	   bge skip
+       blt negate	   
+negate vneg.f32 s11,s11 ; invert the sign for cos if sin is positive
+
+skip
+	   vmul.f32 s17,s7,s20
+	   vadd.f32 s17,s17,s14       ; y_earth
+	   vmov.f32 r0,s17
+	   BL printdata
+	   
+	   vmul.f32 s18,s11,s20
+	   vadd.f32 s18,s18,s15       ; x_earth
+	   vmov.f32 r0,s18
+	   BL printdata
+	   
+	   vmul.f32 s7,s7,s21
+	   vadd.f32 s7,s7,s22         ; y_moon
+	   vmov.f32 r0,s7
+	   BL printdata
+	   
+	   vmul.f32 s11,s11,s21
+	   vadd.f32 s11,s11,s23         ; x_moon
+	   vmov.f32 r0,s11
+	   BL printdata
+	    
+;/////////////////////////////////////////////////////////////////	  
+	   
+	    vadd.f32 s20,s20,s16    ; increase radius_earth
+		vadd.f32 s21,s21,s19    ; increase radius_moon
+	    vadd.f32 s1,s1,s10      ; increase radian
+	    
+		cmp r8,#8               ; number of iterations
+		beq over
+		
+	    add r7,r7,#1
+	   	cmp r7,#21              ;number of points in one cycle  + 1
+	    beq start
+	   
+	    cmp r7,#21
+	    bne loop1
+		
+over      		
+	   
 stop b stop
 endfunc
      end
 		 
-	
-		 	  
-		  
